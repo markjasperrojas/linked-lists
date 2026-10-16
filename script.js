@@ -122,6 +122,65 @@ class LinkedList {
 
     return result;
   }
+
+  // Need to optimize
+  insertAt(index, ...values) {
+    if (index < 0 || index > this.size()) {
+      throw new RangeError('Index is out of bounds');
+    }
+
+    if (values.length === 0) return;
+
+    if (this.headNode === null) {
+      for (let i = 0; i < values.length; i++) {
+        this.append(values[i]);
+      }
+
+      return;
+    }
+
+    if (index === 0) {
+      const temp = this.headNode;
+
+      this.headNode = null;
+
+      for (let i = 0; i < values.length; i++) {
+        this.append(values[i]);
+      }
+
+      let current = this.headNode;
+
+      while (current.nextNode !== null) {
+        current = current.nextNode;
+      }
+
+      current.nextNode = temp;
+
+      return;
+    }
+
+    let currentIndex = 0;
+    let currentNode = this.headNode;
+
+    while (currentIndex + 1 !== index) {
+      currentNode = currentNode.nextNode;
+      currentIndex++;
+    }
+
+    const temp = currentNode.nextNode;
+
+    currentNode.nextNode = null;
+
+    for (let i = 0; i < values.length; i++) {
+      this.append(values[i]);
+    }
+
+    while (currentNode.nextNode !== null) {
+      currentNode = currentNode.nextNode;
+    }
+
+    currentNode.nextNode = temp;
+  }
 }
 
 class Node {
